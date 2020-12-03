@@ -11,6 +11,7 @@ class PasswordCheckerTest {
     fun testPwdRules() {
         val input = listOf<String>("1-3 a: abcde",
                 "1-3 b: cdefg", "2-9 c: ccccccccc")
+
         val ret1 = p.getNumberOfValidPasswords(input)
         assertEquals(2, ret1)
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.aoc2020.TreeCounterTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-12-03T19:49:35" hostname="DESKTOP-90MJ8JX" time="0.09">
+<testsuite name="com.aoc2020.TreeCounterTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-12-03T20:07:19" hostname="DESKTOP-90MJ8JX" time="0.024">
   <properties/>
-  <testcase name="treeCountTestPart2()" classname="com.aoc2020.TreeCounterTest" time="0.085"/>
-  <testcase name="treeCountTest()" classname="com.aoc2020.TreeCounterTest" time="0.004"/>
+  <testcase name="treeCountTestPart2()" classname="com.aoc2020.TreeCounterTest" time="0.013"/>
+  <testcase name="treeCountTest()" classname="com.aoc2020.TreeCounterTest" time="0.01"/>
   <system-out><![CDATA[Test data result: 336
 Part 2 result: 2431272960
 ]]></system-out>

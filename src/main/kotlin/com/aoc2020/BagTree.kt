@@ -21,11 +21,10 @@ class BagTree {
     }
 
     fun findWays(rules: List<String>, wantedBag: String): Int {
-        var ret = 0
         containerColors.clear()
         parseRules(rules)
 
-        ret = findRecursive(ruleSet, "$wantedBag bag")
+        findRecursive(ruleSet, "$wantedBag bag")
         return containerColors.size
     }
 
@@ -47,12 +46,12 @@ class BagTree {
 
     fun countContainables(container: String): Int {
         var ret = 0
-        var containables = containerCounter.get(container)
+        val containables = containerCounter.get(container)
         if (containables != null) {
-            containables!!.forEach { containable ->
+            containables.forEach { containable ->
                 // contains number of bags of this color
                 ret += containable.value
-                var c = countContainables(containable.key)
+                val c = countContainables(containable.key)
                 // plus the number of bags * the number of contained bags
                 if (c != 0) ret += (containable.value * c)
             }
@@ -61,10 +60,10 @@ class BagTree {
     }
 
     private fun getContainableBags(container: String, bags: List<String>): List<String> {
-        var ret = mutableListOf<String>()
+        val ret = mutableListOf<String>()
         bags.forEach() { it ->
             println("aha: $it")
-            var s = it.replace("bags", "bag").replace(".", "")
+            val s = it.replace("bags", "bag").replace(".", "")
             val re = "(\\d+)\\s(.*)".toRegex()
             val aha = re.find(s)
             var color = ""

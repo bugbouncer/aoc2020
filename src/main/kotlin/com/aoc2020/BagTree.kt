@@ -1,17 +1,21 @@
 package com.aoc2020
 
+import org.apache.logging.log4j.LogManager
+
 class BagTree {
     var containerColors = mutableSetOf<String>()
     var containerCounter = mutableMapOf<String, MutableMap<String, Int>>()
     val ruleSet = mutableMapOf<String, List<String>>()
 
-    fun parseRules(rules: List<String>) {
+    val log = LogManager.getLogger(BagTree::class.java)
+
+    private fun parseRules(rules: List<String>) {
         rules.forEach { rule ->
             val ruleLine = rule.replace("bags", "bag")
-            var aha = ruleLine.split(" contain ", ", ")
+            val aha = ruleLine.split(" contain ", ", ")
             // sanity
             if (aha.size < 2) {
-                println("Could not parse line $rule")
+                log.atError().log("Could not parse line $rule")
                 return
             }
 
@@ -36,7 +40,7 @@ class BagTree {
             val x = possible.keys
             x.forEach { bagColor ->
                 containerColors.add(bagColor)
-                println("$wanted can be contained in $bagColor")
+                log.atDebug().log("$wanted can be contained in $bagColor")
                 ret += findRecursive(rules, bagColor)
             }
 
@@ -46,7 +50,7 @@ class BagTree {
 
     fun countContainables(container: String): Int {
         var ret = 0
-        val containables = containerCounter.get(container)
+        val containables = containerCounter[container]
         if (containables != null) {
             containables.forEach { containable ->
                 // contains number of bags of this color
@@ -62,7 +66,7 @@ class BagTree {
     private fun getContainableBags(container: String, bags: List<String>): List<String> {
         val ret = mutableListOf<String>()
         bags.forEach() { it ->
-            println("aha: $it")
+            log.atDebug().log("aha: $it")
             val s = it.replace("bags", "bag").replace(".", "")
             val re = "(\\d+)\\s(.*)".toRegex()
             val aha = re.find(s)

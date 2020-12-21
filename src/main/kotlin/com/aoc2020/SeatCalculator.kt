@@ -4,8 +4,8 @@ import kotlin.math.pow
 
 class SeatCalculator {
     fun getSeatId(seatCode: String): Int {
-        var ret = 1
-        var rc = getRowColumn(seatCode)
+        val ret: Int
+        val rc = getRowColumn(seatCode)
         ret = rc.first * 8 + rc.second
         return ret
     }

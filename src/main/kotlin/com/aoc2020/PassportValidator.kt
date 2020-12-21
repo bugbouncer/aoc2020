@@ -10,7 +10,7 @@ class PassportValidator {
     }
 
     fun countValidPassportsComplex(file: File, optionalFields: List<String>): Int {
-        var ret = 0
+        var ret: Int
         val passports = parsePassportFile(file)
         ret = countValidPassportComplex(passports, optionalFields)
         return ret

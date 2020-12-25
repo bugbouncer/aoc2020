@@ -1,11 +1,33 @@
 package com.aoc2020
 
 class RingBuffer<T> {
-    var elements = mutableListOf<RbElement<T>>()
-    var current: RbElement<T>? = null
+    private var elements = mutableListOf<RbElement<T>>()
+    private var current: RbElement<T>? = null
 
+    /**
+     * Append element as last element of all elements which have been added so far
+     */
     fun append(element: T) {
         append(RbElement(element))
+    }
+
+    /**
+     * Add element after the current element.
+     */
+    fun add(element: T) {
+        val rbElement = RbElement(element)
+        elements.add(rbElement)
+        if (current == null) {
+            current = rbElement
+            rbElement.next = rbElement
+        } else {
+            rbElement.next = current!!.next
+            current!!.next = rbElement
+        }
+    }
+
+    fun moveCursorTo(element: T) {
+        elements.forEach { if (it.data == element) current = it }
     }
 
     /**
@@ -52,6 +74,9 @@ class RingBuffer<T> {
     }
 }
 
-class RbElement<T>(val data: T) {
-    var next: RbElement<T>? = null
+private class RbElement<T>(val data: T) {
+    var next: RbElement<T> = this
+    override fun toString(): String {
+        return "RbElement(data=$data)"
+    }
 }

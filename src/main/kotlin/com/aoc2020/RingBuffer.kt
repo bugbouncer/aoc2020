@@ -1,8 +1,11 @@
 package com.aoc2020
 
+import java.lang.NullPointerException
+
 class RingBuffer<T> {
-    private var elements = mutableListOf<RbElement<T>>()
+    private var elements = mutableMapOf<T, RbElement<T>>()
     private var current: RbElement<T>? = null
+    private var last: RbElement<T>? = null
 
     /**
      * Append element as last element of all elements which have been added so far
@@ -14,9 +17,9 @@ class RingBuffer<T> {
     /**
      * Add element after the current element.
      */
-    fun add(element: T) {
-        val rbElement = RbElement(element)
-        elements.add(rbElement)
+    fun add(value: T) {
+        val rbElement = RbElement(value)
+        elements.put(value, rbElement)
         if (current == null) {
             current = rbElement
             rbElement.next = rbElement
@@ -26,8 +29,31 @@ class RingBuffer<T> {
         }
     }
 
+    private fun find(element: T): RbElement<T> {
+        try {
+            return elements[element]!!
+        } catch (e: NullPointerException) {
+            println("Could not find element $element")
+            e.printStackTrace()
+        }
+        return elements[element]!!
+    }
+
+    fun moveElements(count: Int, after : T, destination: T) {
+        val rbAfter = find(after)
+        val rbDest = find(destination)
+        val firstToMove = rbAfter.next
+        var lastToMove = rbAfter
+        for(i in 1 .. count) {
+            lastToMove = lastToMove.next
+        }
+        rbAfter.next = lastToMove.next
+        lastToMove.next = rbDest.next
+        rbDest.next = firstToMove
+    }
+
     fun moveCursorTo(element: T) {
-        elements.forEach { if (it.data == element) current = it }
+        current = elements[element]
     }
 
     /**
@@ -38,21 +64,42 @@ class RingBuffer<T> {
         return current?.data
     }
 
+    fun getCurrent(): T {
+        return current!!.data
+    }
+
+    fun moveCursorNext() {
+        current = current!!.next
+    }
+
+    /**
+     * Returns value of next element and moves cursor forward.
+     */
+    fun getNext(): T? {
+        val ret = current?.next?.data
+        current = current!!.next
+        return ret
+    }
+
     fun popNext(): T? {
         val ret = current?.next?.data
-        elements.remove(current?.next)
+        val next = current?.next
+        elements.remove(current?.next?.data)
+        current?.next = next!!.next
         return ret
     }
 
     private fun append(element: RbElement<T>) {
-        if (elements.size == 0) {
-            element.next = element
-            current = element
+        if(current == null) current = element
+
+        if(last != null) {
+            element.next = last!!.next
+            last!!.next = element
         } else {
-            element.next = elements.last().next
-            elements.last().next = element
+            element.next = element
         }
-        elements.add(element)
+        elements.put(element.data, element)
+        last = element
     }
 
     /**
@@ -71,6 +118,9 @@ class RingBuffer<T> {
             } while (runner != current)
         }
         return ret
+    }
+    fun getLastElement(): T {
+        return last!!.data
     }
 }
 
